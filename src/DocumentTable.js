@@ -5,7 +5,7 @@ import DocumentUploadForm from "./DocumentUploadForm";
 const DocumentTable = () => {
   const [documents, setDocuments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-//   const [displayedDocuments, setDisplayedDocuments] = useState([]);
+    // const [displayedDocuments, setDisplayedDocuments] = useState([]);
 
   const pageSize = 5;
 
@@ -27,28 +27,28 @@ const DocumentTable = () => {
   };
 
   useEffect(() => {
-    const fetchDocuments = () => {
-      axios
-        .get("/api/documents")
-        .then((response) => {
-          setDocuments(response.data);
-          updateDisplayedDocuments(response.data);
-        })
-        .catch((error) => {
-          // Handle error
-        });
+    const fetchDocuments = async () => {
+      try {
+        const response = await axios.get("/api/documents");
+        const data = response.data;
+        setDocuments(data);
+        updateDisplayedDocuments(data);       
+      } catch (error) {
+        // Handle error
+      }
     };
-
+  
     fetchDocuments();
   }, []);
+  
+
+
 
   const updateDisplayedDocuments = (data) => {
-    // const startIndex = (currentPage - 1) * pageSize;
-    // const endIndex = startIndex + pageSize;
-    // const slicedData = data.slice(startIndex, endIndex);
-    // setDisplayedDocuments(slicedData);
-
-    
+//     const startIndex = (currentPage - 1) * pageSize;
+//     const endIndex = startIndex + pageSize;
+//     const slicedData = data.slice(startIndex, endIndex);
+//     setDisplayedDocuments(slicedData);
   };
 
   // Pagination Logic
@@ -57,15 +57,9 @@ const DocumentTable = () => {
   const endIndex = startIndex + pageSize;
   const displayedDocuments = documents.slice(startIndex, endIndex);
 
-//   const handleUpdateTable = (newDocument) => {
-//     setDocuments((prevDocuments) => [...prevDocuments, newDocument]);
-//     updateDisplayedDocuments([...documents, newDocument]);
-    
-//   };
-
   const handleUpdateTable = (newDocument) => {
     setDocuments((prevDocuments) => [...prevDocuments, newDocument]);
-    fetchDocuments();
+    updateDisplayedDocuments([...documents, newDocument]);
   };
 
   const handleDelete = (id) => {
@@ -91,6 +85,9 @@ const DocumentTable = () => {
 
   return (
     <div>
+      <DocumentUploadForm onUpload={handleUpdateTable} />
+      <br />
+      <br />
       <table
         style={{
           borderCollapse: "collapse",
@@ -142,8 +139,6 @@ const DocumentTable = () => {
           Next
         </button>
       </div>
-
-      <DocumentUploadForm onUpload={handleUpdateTable} />
     </div>
   );
 };
