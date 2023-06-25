@@ -5,7 +5,6 @@ import DocumentUploadForm from "./DocumentUploadForm";
 const DocumentTable = () => {
   const [documents, setDocuments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-    // const [displayedDocuments, setDisplayedDocuments] = useState([]);
 
   const pageSize = 5;
 
@@ -32,23 +31,17 @@ const DocumentTable = () => {
         const response = await axios.get("/api/documents");
         const data = response.data;
         setDocuments(data);
-        updateDisplayedDocuments(data);       
+        updateDisplayedDocuments(data);
       } catch (error) {
         // Handle error
       }
     };
-  
+
     fetchDocuments();
   }, []);
-  
-
-
 
   const updateDisplayedDocuments = (data) => {
-//     const startIndex = (currentPage - 1) * pageSize;
-//     const endIndex = startIndex + pageSize;
-//     const slicedData = data.slice(startIndex, endIndex);
-//     setDisplayedDocuments(slicedData);
+    //
   };
 
   // Pagination Logic
@@ -102,7 +95,6 @@ const DocumentTable = () => {
             <th style={tableHeaderStyle}>File Type</th>
             <th style={tableHeaderStyle}>File Size</th>
             <th style={tableHeaderStyle}>Actions</th>
-            {/* <th style={tableHeaderStyle}>File Content</th> */}
           </tr>
         </thead>
         <tbody>
@@ -117,9 +109,6 @@ const DocumentTable = () => {
                   Delete
                 </button>
               </td>
-              {/* <td style={{ ...tableCellStyle, wordWrap: "break-word" }}>
-                {document.fileContent}
-              </td> */}
             </tr>
           ))}
         </tbody>
